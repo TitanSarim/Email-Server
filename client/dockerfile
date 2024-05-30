@@ -1,0 +1,23 @@
+# Use the official Node.js 18 image.
+FROM node:20
+
+# Set the working directory.
+WORKDIR /app
+
+# Copy package.json and package-lock.json files.
+COPY package*.json ./
+
+# Copy the rest of the application code.
+COPY . .
+
+# Set the environment variable to development.
+ENV NODE_ENV=development
+
+# Install dependencies.
+RUN npm install
+
+# Expose the port for the frontend.
+EXPOSE 3000
+
+# Start the application.
+CMD ["npm", "run", "start"]
