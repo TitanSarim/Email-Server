@@ -33,9 +33,6 @@ const registerUser = catchAsyncError(async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const uniqueId = `${uuidv4()}-${Date.now()}`;
 
-        const token = generatedToken({id: uniqueId, username, email });
-
-
         const user = {
             id: uniqueId,
             username,
@@ -51,8 +48,8 @@ const registerUser = catchAsyncError(async (req, res, next) => {
             id: uniqueId,
             body: user
         });
-        console.log("User response from Elasticsearch:", userResponse);
 
+        const token = generatedToken({id: userResponse._id, username, email });
 
         setTokenCookie(res, token);
 
@@ -97,11 +94,9 @@ const loginUser = catchAsyncError(async (req, res, next) => {
             return next(new errorHandler("User not found", 404));
         }
 
-        // Retrieve user data
         const userData = userResult.hits.hits[0]._source;
         const { id, username, email, password: hashedPassword } = userData;
 
-        // Compare passwords
         const passwordMatch = await bcrypt.compare(password, hashedPassword);
         if (!passwordMatch) {
             return next(new errorHandler("Invalid password", 401));

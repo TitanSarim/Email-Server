@@ -39,7 +39,7 @@ const Register = () => {
             />
             <Button className="w-full mb-4">Sign Up</Button>
             <p className='text-center font-semibold font-montserrat text-gray-600'>Or</p>
-            <Link to="/" className='w-full flex items-center justify-center bg-slate-900 text-white text-center rounded-md py-2 mt-2 font-montserrat text-[15px] hover:bg-slate-800'>Sign In</Link>
+            <Link to="/login" className='w-full flex items-center justify-center bg-slate-900 text-white text-center rounded-md py-2 mt-2 font-montserrat text-[15px] hover:bg-slate-800'>Sign In</Link>
           </form>
           <p className="text-sm text-center mt-6 text-gray-400">
             By clicking continue, you agree to our <a href="#" className="underline">Terms of Service</a> and <a href="#" className="underline">Privacy Policy</a>.
