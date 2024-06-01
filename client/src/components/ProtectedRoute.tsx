@@ -21,6 +21,7 @@ export const ProtectedRoutes = () => {
     const naviagte = useNavigate();
 
     const token = Cookies.get('token')
+    console.log('token', token, isAuthenticated)
 
     useEffect(() => {
         const token = Cookies.get('token')

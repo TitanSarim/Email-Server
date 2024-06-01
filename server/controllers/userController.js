@@ -38,7 +38,6 @@ const registerUser = catchAsyncError(async (req, res, next) => {
             username,
             email,
             password: hashedPassword,
-            token,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
@@ -52,6 +51,8 @@ const registerUser = catchAsyncError(async (req, res, next) => {
         const token = generatedToken({id: userResponse._id, username, email });
 
         setTokenCookie(res, token);
+
+        console.log("userResponse", userResponse)
 
         res.status(201).json({
             success: true,
@@ -75,6 +76,9 @@ const registerUser = catchAsyncError(async (req, res, next) => {
 const loginUser = catchAsyncError(async (req, res, next) => {
     try {
         const { usernameOrEmail, password } = req.body;
+
+        console.log("usernameOrEmail", usernameOrEmail)
+        console.log("password", password)
 
         const userResult = await ElasticClient.search({
             index: 'user',
@@ -105,6 +109,8 @@ const loginUser = catchAsyncError(async (req, res, next) => {
         const token = generatedToken({ id, username, email });
 
         setTokenCookie(res, token);
+
+        console.log("userData", userData)
 
         res.status(200).json({
             success: true,

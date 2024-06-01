@@ -9,7 +9,7 @@ import{
 
     CLEAR_ERRORS
 } from '../constants/UserConstants'
-import { Dispatch } from 'redux';
+import { Dispatch} from 'redux';
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -52,9 +52,11 @@ interface  RegisterFormData {
 }
 
 interface  LoginFormData {
-  UsernameOrEmail?: string;
+  usernameOrEmail?: string;
   password?: string;
 }
+
+
 
 type RegisterDispatchTypes = REGISTER_REQUEST | REGISTER_SUCCESS | REGISTER_FAIL
 type LoginDispatchTypes = LOGIN_REQUEST | LOGIN_SUCCESS | LOGIN_FAIL
@@ -77,6 +79,7 @@ export const register = (formData: RegisterFormData) => async (dispatch : Dispat
   
       if(data.token){
         Cookies.set('token', data.token, { expires: 365 });
+        window.location.reload();
       }
       
   
@@ -106,6 +109,7 @@ export const register = (formData: RegisterFormData) => async (dispatch : Dispat
   
       if(data.token){
         Cookies.set('token', data.token, { expires: 365 });
+        window.location.reload()
       }
   
       dispatch({ type: LOGIN_SUCCESS, payload: data.user });

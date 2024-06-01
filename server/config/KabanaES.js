@@ -8,7 +8,7 @@ const ElasticClient = new Client({
     node: 'https://localhost:9200',
     auth: {
         username: 'elastic',
-        password: 'V7ulOXHzp=sVK6gz+3xU',
+        password: 'gTKwJe*kWZmZ7YYJLQNK',
     
     },
     tls: {
@@ -42,7 +42,6 @@ const testConnectionAndCreateIndex = async () => {
         //                     username: { type: 'keyword' },
         //                     email: { type: 'keyword' },
         //                     password: { type: 'text' },
-        //                     token: { type: 'text' },
         //                     createdAt: { type: 'date' },
         //                     updatedAt: { type: 'date' }
         //                 }

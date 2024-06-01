@@ -27,8 +27,9 @@ const Login = () => {
   const { error} = useSelector((state: RootState) => state.user);
 
 
-  const [UsernameOrEmail, setUsernameOrEmail] = useState<string >('')
+  const [usernameOrEmail, setUsernameOrEmail] = useState<string >('')
   const [password, setPassword] = useState<string >('')
+  const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
   const handleSubmit = (event: React.ChangeEvent<unknown>) => {
 
@@ -36,12 +37,11 @@ const Login = () => {
 
 
     const formData = {
-      UsernameOrEmail,
+      usernameOrEmail,
       password
     }
 
-    dispatch(login(formData))
-
+    dispatch(login(formData, setIsSuccess))
   }
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const Login = () => {
               type="text"
               placeholder="username or email"
               className="w-full mb-4"
-              value={UsernameOrEmail}
+              value={usernameOrEmail}
               onChange={(e)=> setUsernameOrEmail(e.target.value)}
             />
             <Input
