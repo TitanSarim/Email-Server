@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import Dashboard from './pages/dashbaord/dashboard'
+import Dashboard from './pages/dashbaord/Dashboard'
 import {ProtectedRoutes} from './components/ProtectedRoute'
 
 function App() {

@@ -29,7 +29,6 @@ const Login = () => {
 
   const [usernameOrEmail, setUsernameOrEmail] = useState<string >('')
   const [password, setPassword] = useState<string >('')
-  const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
   const handleSubmit = (event: React.ChangeEvent<unknown>) => {
 
@@ -41,7 +40,7 @@ const Login = () => {
       password
     }
 
-    dispatch(login(formData, setIsSuccess))
+    dispatch(login(formData))
   }
 
   useEffect(() => {
