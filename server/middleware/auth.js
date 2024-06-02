@@ -20,30 +20,35 @@ const isAuthenticatedUser = catchAsyncError(async(req, res, next) => {
 
     try {
         const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-        const { body: userResponse } = await ElasticClient.search({
+        const userId = decodedData.id.id;
+        const userResponse = await ElasticClient.search({
             index: 'user',
             body: {
                 query: {
-                    match: { id: decodedData.id }
+                    "match": {
+                        "id": userId
+                    }
                 },
-                _source: ['id', 'email', 'username', 'role']
+                "_source": ['id', 'email', 'username']
             }
         });
 
-        if(userResponse.hits.total.value === 0) {
-            return next(new errorHandler("User not found", 401))
-        }
 
-        const user = userResponse.hits.hits[0]._source;
+        if (userResponse.hits.total.value > 0) {
+            const user = userResponse.hits.hits[0]._source;
 
-        const userData = {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-        }
-
-        req.user = userData
-        next();
+            const userData = {
+                id: user.id,
+                email: user.email,
+                username: user.username,
+            }
+    
+            req.user = userData
+            next();
+        } else {
+            console.log("User not found");
+            return null;
+        }       
 
     } catch(error) {
         return next(new errorHandler(error, 403))

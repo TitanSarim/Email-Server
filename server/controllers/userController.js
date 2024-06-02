@@ -17,9 +17,9 @@ const registerUser = catchAsyncError(async (req, res, next) => {
             body: {
                 query: {
                     bool: {
-                        should: [
-                            { match: { username } },
-                            { match: { email } }
+                        must:[
+                            {match: {"username": username}},
+                            {match: {"email": email}}
                         ]
                     }
                 }
@@ -77,18 +77,16 @@ const loginUser = catchAsyncError(async (req, res, next) => {
     try {
         const { usernameOrEmail, password } = req.body;
 
-        console.log("usernameOrEmail", usernameOrEmail)
-        console.log("password", password)
-
         const userResult = await ElasticClient.search({
             index: 'user',
             body: {
                 query: {
                     bool: {
-                        should: [
-                            { match: { username: usernameOrEmail } },
-                            { match: { email: usernameOrEmail } }
-                        ]
+                        should:[
+                            {match: {"username": usernameOrEmail}},
+                            {match: {"email": usernameOrEmail}}
+                        ],
+                        minimum_should_match: 1
                     }
                 }
             }

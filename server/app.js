@@ -25,10 +25,12 @@ app.use(bodyParser.json());
 
 // Import routes
 const user = require("./routes/userRoute");
+const email = require("./routes/emailRoute");
 
 
 // Use routes
 app.use("/api/v1", user);
+app.use("/api/v1", email);
 
 app.use(errorMiddleware);
 

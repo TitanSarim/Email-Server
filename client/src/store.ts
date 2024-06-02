@@ -4,10 +4,12 @@ import {thunk} from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { userReducer } from './global/reducers/UserReducer';
-
+import { connectedMailReducer, getAllMailsReducer } from './global/reducers/MailReducer';
 
 const reducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    connectedMails: connectedMailReducer,
+    getAllMails: getAllMailsReducer
 })
 
 

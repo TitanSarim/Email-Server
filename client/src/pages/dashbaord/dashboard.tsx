@@ -1,43 +1,109 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideBar from '@/components/SideBar'
-import { BiLogoGmail } from "react-icons/bi";
-import { PiMicrosoftOutlookLogo } from "react-icons/pi";
+import { getAllConnetedMail, getAllMailsforSelected, clearErrors } from '@/global/actions/MailActions';
+import type { AppDispatch } from '../../store'
+import { toast } from 'react-toastify';
+import {useDispatch, useSelector } from 'react-redux';
+import EmailLists from '@/components/EmailLists';
 
 
-interface Account {
-  image: React.ComponentType;
-  account: string;
+interface Mail {
+  mail?: string;
+  type?: string;
+  user_id?: string;
+  password?: string;
 }
 
-const accounts: Account[] = [
-  {
-    "image": BiLogoGmail,
-    "account": "sarimxahid123@gmail.com"
-  },
-  {
-    "image": PiMicrosoftOutlookLogo,
-    "account": "sarimxahid123@outlook.com"
-  }
-];
+interface RootState {
+  connectedMails: {
+    error?: string;
+    connectedMails?: Mail[];
+  };
+}
+
+
+interface Email {
+  user_id: string;
+  email_id: number;
+  body: string;
+}
+
+interface RootMailDetails {
+  getAllMails: {
+    allMails?: Email[];
+  };
+}
+
 
 
 const Dashboard = () => {
 
-  const [selectedAccount, setSelectedAccount] = useState<Account>(accounts[0]);
+  const useAppDispatch = useDispatch.withTypes<AppDispatch>()
+  const dispatch = useAppDispatch()
+
+  const {connectedMails, error} = useSelector((state: RootState) => state.connectedMails);
+  const {allMails} = useSelector((state: RootMailDetails) => state.getAllMails)
+
+  const [selectedAccount, setSelectedAccount] = useState<Mail[]>([]);
+  const [data, setData] = useState<Email[]>(allMails)
 
   const handleChange = (accountEmail: string) => {
-    const selected = accounts.find(account => account.account === accountEmail);
+    const selected = connectedMails?.find(account => account.mail === accountEmail);
     if (selected) {
-      setSelectedAccount(selected);
+      setSelectedAccount([selected]);
+      localStorage.setItem('selectedAccount', JSON.stringify(selected));
     }
   };
 
+  console.log("data123", allMails)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getAllConnetedMail())
+}, [dispatch, error])
+
+  useEffect(() =>{
+    setSelectedAccount(connectedMails)
+  }, [connectedMails])
+
+
+  const fetchEmails = () =>{
+
+    const storedAccount = localStorage.getItem('selectedAccount');
+      if (storedAccount) {
+        const cred = JSON.parse(storedAccount);
+        const formData = {
+          type: cred?.type,
+          email: cred?.mail,
+          password: cred?.password
+        }
+
+        dispatch(getAllMailsforSelected(formData))
+    }
+  }
+
+  useEffect(() => {
+    // const interval = setInterval(() => {
+    //   fetchEmails();
+    // }, 5000);
+
+    // return () => clearInterval(interval);
+    // setData(allMails)
+  }, [allMails]);
   
+
   return (
-    <div className='w-[98%] h-[98vh] flex-row items-start justify-between m-auto mt-2'>
+    <div className='w-[98%] h-[98vh] flex flex-row items-start justify-start m-auto mt-2'>
 
       <div>
-        <SideBar selectedAccount={selectedAccount}  accounts={accounts} handleChange={handleChange}/>
+        <SideBar selectedAccount={selectedAccount} handleChange={handleChange}/>
+      </div>
+
+      <div>
+        <EmailLists data={data}/>
       </div>
 
     </div>

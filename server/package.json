@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "migrate": "node config/indices.js"
   },
   "author": "Sarim",
   "license": "ISC",
@@ -19,7 +20,10 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "imap": "^0.8.19",
+    "imap-simple": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mailparser": "^3.7.1",
     "moment": "^2.30.1",
     "mysql2": "^3.9.9",
     "nodemailer": "^6.9.13",
